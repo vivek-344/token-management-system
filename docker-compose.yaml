@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres17
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB} -h $${POSTGRES_HOST}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    env_file:
+      - app.env
+
+  migrate:
+    build:
+      dockerfile: Dockerfile.migrate
+    container_name: token-management-system-migrate
+    depends_on:
+      postgres:
+        condition: service_healthy
+    env_file:
+      - app.env
+
+  app:
+    build:
+      dockerfile: Dockerfile
+    container_name: token-management-system
+    depends_on:
+      postgres:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    env_file:
+      - app.env
+
+volumes:
+  postgres_data:
