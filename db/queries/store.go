@@ -88,9 +88,6 @@ func (q *Queries) GetTokenWithLeastUsage(minUsage int) (*models.Token, error) {
 	var token models.Token
 	err := q.db.QueryRow(getTokensWithLeastUsage, minUsage).Scan(&token.TokenID, &token.UsageCount, &token.LastUpdated)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, nil
-		}
 		return nil, err
 	}
 
