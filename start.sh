@@ -6,4 +6,5 @@ echo "Starting the service..."
 # Load env variables
 source /app/app.env
 
-exec "$@"
+# Start the main application
+/app/main
