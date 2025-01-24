@@ -10,9 +10,9 @@ dropdb:
 	docker exec -it postgres17 dropdb ${POSTGRES_DB}
 
 migrateup:
-	migrate -path db/migration -database "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/${POSTGRES_DB}?sslmode=disable" -verbose up
+	migrate -path db/migration -database "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB}?sslmode=disable" -verbose up
 
 migratedown:
-	migrate -path db/migration -database "postgresql://$POSTGRES_USER:$POSTGRES_PASSWORD@localhost:5432/${POSTGRES_DB}?sslmode=disable" -verbose down
+	migrate -path db/migration -database "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:5432/${POSTGRES_DB}?sslmode=disable" -verbose down
 
 .PHONY: postgres createdb dropdb migrateup migratedown
